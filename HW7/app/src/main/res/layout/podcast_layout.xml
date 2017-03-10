@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@android:drawable/btn_dialog"
+        android:id="@+id/podcast_iv" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/podcast_tv"
+        android:layout_toRightOf="@+id/podcast_iv"
+        android:layout_marginTop="-35dp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/podcast_tv"
+        android:layout_toRightOf="@+id/podcast_iv"
+        android:id="@+id/pubdate_tv"
+        android:layout_marginTop="-20dp"/>
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_media_play"
+        android:id="@+id/playcontrol_ib"
+        android:layout_below="@+id/pubdate_tv"
+        android:layout_toRightOf="@+id/podcast_iv"
+        android:layout_toEndOf="@+id/podcast_iv"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:text="@string/play_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/playcontrol_ib"
+        android:layout_below="@id/pubdate_tv"
+        android:id="@+id/playNow_tv" />
+</RelativeLayout>

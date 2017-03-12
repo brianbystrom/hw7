@@ -124,7 +124,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
 
             }
-        });
+        });//
 
         if (!mDataset.get(position).getUrlToImage().toString().equals("")) {
             Picasso.with(mContext).load(mDataset.get(position).getUrlToImage()).into(holder.mPodcastIv);

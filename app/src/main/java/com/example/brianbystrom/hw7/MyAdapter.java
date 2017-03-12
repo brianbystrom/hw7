@@ -78,13 +78,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         else  if(s.equals("Sep")){
             return 9;
         }
-        else  if(s.equals("Jan")){
+        else  if(s.equals("Oct")){
             return 10;
         }
-        else  if(s.equals("Jan")){
+        else  if(s.equals("Nov")){
             return 11;
         }
-        else  if(s.equals("Jan")){
+        else  if(s.equals("Dec")){
             return 12;
         }
         return 99;
@@ -108,10 +108,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         //TextView tv = (TextView) holder.mLinearLayout.findViewById(R.id.podcast_tv);
         holder.mPodcastTv.setText(mDataset.get(position).getTitle());
 
-        String day = mDataset.get(position).getTitle().substring(5,7);
-        String month = mDataset.get(position).getTitle().substring(5,7);
-        String year;
-        holder.mPubDateTv.setText(mDataset.get(position).getPublished_date());
+        Log.d("POOP",mDataset.get(position).getPublished_date().substring(5,7));
+        int day = Integer.parseInt(mDataset.get(position).getPublished_date().substring(5,7));
+        int month = convertMonthToNumber(mDataset.get(position).getPublished_date().substring(8,11));
+        int year = Integer.parseInt(mDataset.get(position).getPublished_date().substring(12,16));
+        holder.mPubDateTv.setText(month+"/"+day+"/"+year);//mDataset.get(position).getPublished_date());
 
 
         Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
@@ -124,7 +125,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
 
             }
-        });//
+        });
 
         if (!mDataset.get(position).getUrlToImage().toString().equals("")) {
             Picasso.with(mContext).load(mDataset.get(position).getUrlToImage()).into(holder.mPodcastIv);

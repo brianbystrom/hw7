@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
     private RecyclerView.LayoutManager mLayoutManager;
     int layout = 0;
     final static String PODCAST_KEY = "PODCAST";
-    ProgressBar pb;
+    public ProgressBar pb;
+    public ProgressBar pbpod;
 
 
 
@@ -149,8 +150,17 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
         mRecyclerView.setAdapter(mAdapter);
 
        pb = (ProgressBar) findViewById(R.id.pb_load);
+        pbpod = (ProgressBar) findViewById(R.id.podcast_pb);
+        //pbpod.setMax(200000);
         pb.setVisibility(GONE);
         mRecyclerView.setVisibility(VISIBLE);
+
+
+    }
+
+    public void updateProg(int b, int duration){
+
+        pbpod.setProgress(b);
 
 
     }

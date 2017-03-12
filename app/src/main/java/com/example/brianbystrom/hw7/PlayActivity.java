@@ -1,8 +1,10 @@
 package com.example.brianbystrom.hw7;
 
+import android.content.Context;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class PlayActivity extends AppCompatActivity implements PlayPodcastAsync.
     ImageButton control;
     ProgressBar progress;
     boolean play = false;
+    ProgressBar podcastBar;
     boolean hasPlayed = false;
 
     @Override
@@ -40,8 +43,9 @@ public class PlayActivity extends AppCompatActivity implements PlayPodcastAsync.
         pubDate = (TextView) findViewById(R.id.pc_pubdate);
         image = (ImageView) findViewById(R.id.pc_image);
         control = (ImageButton) findViewById(R.id.pc_control);
-        progress = (ProgressBar) findViewById(R.id.pc_progressbar);
-        
+       // progress = (ProgressBar) findViewById(R.id.pc_progressbar);
+        podcastBar = (ProgressBar) findViewById(R.id.pc_progressbar);
+        //podcastBar.setMax(10);
         if(getIntent().getExtras() != null) {
             final Data podcast = (Data) getIntent().getExtras().getParcelable(MainActivity.PODCAST_KEY);
             //name_input.setText((String) editableMovie.name);
@@ -50,6 +54,7 @@ public class PlayActivity extends AppCompatActivity implements PlayPodcastAsync.
             description.setText("Description: " + podcast.getDescription());
             pubDate.setText("Published Date: " + podcast.getPublished_date());
             duration.setText("Duration: " + podcast.getDuration() + " seconds");
+
 
             if (!podcast.getUrlToImage().toString().equals("")) {
                 Picasso.with(PlayActivity.this).load(podcast.getUrlToImage()).into(image);
@@ -77,8 +82,8 @@ public class PlayActivity extends AppCompatActivity implements PlayPodcastAsync.
     @Override
     public void playPodcast(final MediaPlayer mPlayer) {
         mPlayer.start();
-        play = true;
-
+        //play = true;
+        new syncTimeA(mPlayer,PlayActivity.this).execute(mPlayer);
 
 
         control.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause));
@@ -99,5 +104,62 @@ public class PlayActivity extends AppCompatActivity implements PlayPodcastAsync.
         });
 
 
+    }
+    public void updateProg(int b){
+        Log.d("HIT ME BABY","ONE MORE TIME");
+        podcastBar.setProgress(b);
+
+
+    }
+
+    public class syncTimeA extends AsyncTask<MediaPlayer,Void,Void> {
+        MediaPlayer mPlayer;
+        Context playActivity;
+        public syncTimeA(MediaPlayer b, Context p) {
+            super();
+            playActivity = p;
+            mPlayer = b;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ((PlayActivity) playActivity).podcastBar.setMax(mPlayer.getDuration());
+            //Log.d("HIT ME BABY","ONE MORE TIME", ((PlayActivity) playActivity).podcastBar.setMax(mPlayer.getDuration()));
+
+//            try{
+//                for(;;){
+//                    Thread.sleep(1000);
+//                    counter++;
+//                    Log.d("CURRENT",counter+"");
+//                    p.setProgress(counter);
+//                }}
+//            catch (Exception e){
+//
+//            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(MediaPlayer... progressBars) {
+           // Log.d("Duration","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            int duration = mPlayer.getDuration();
+            while(mPlayer.getCurrentPosition() < duration) {
+                ((PlayActivity) playActivity).updateProg(mPlayer.getCurrentPosition());
+                //pb.setProgress(mPlayer.getCurrentPosition());
+                Log.d("CURRENT", mPlayer.getCurrentPosition() + "");
+            }
+            return null;
+        }
     }
 }

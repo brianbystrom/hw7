@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements PlayPodcastAsync.IData {
     private ArrayList<Data> mDataset;
     private Context mContext;
-
+    private Data clickedRadio;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -112,7 +112,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         int day = Integer.parseInt(mDataset.get(position).getPublished_date().substring(5,7));
         int month = convertMonthToNumber(mDataset.get(position).getPublished_date().substring(8,11));
         int year = Integer.parseInt(mDataset.get(position).getPublished_date().substring(12,16));
-        holder.mPubDateTv.setText(month+"/"+day+"/"+year);//mDataset.get(position).getPublished_date());
+        holder.mPubDateTv.setText("Posted: "+month+"/"+day+"/"+year);//mDataset.get(position).getPublished_date());
 
 
         Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
@@ -121,6 +121,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             @Override
             public void onClick(View v) {
                 Log.d("PLAY", "PLAY" + mDataset.get(position).getUrlToMp3());
+                clickedRadio = mDataset.get(position);
                 new PlayPodcastAsync(MyAdapter.this).execute(mDataset.get(position).getUrlToMp3());
 
 
@@ -138,7 +139,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     public void playPodcast(MediaPlayer mPlayer) {
         mPlayer.start();
-        int duration = 0;
+        int duration = Integer.parseInt(clickedRadio.getDuration());
+        Log.d("Duration",duration+"");
         int current = 0;
     }
 

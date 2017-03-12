@@ -8,6 +8,10 @@ package com.example.brianbystrom.hw7;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by brianbystrom on 2/6/17.
@@ -15,6 +19,8 @@ import android.os.Parcelable;
 
 public class Data implements Parcelable {
     String title, author, published_date, description, urlToImage, urlToMp3, duration;
+
+    public int dateStrength;
 
     public String getTitle() {
         return title;
@@ -52,9 +58,11 @@ public class Data implements Parcelable {
         return published_date;
     }
 
-    public void setPublished_date(String published_date) {
-        this.published_date = published_date;
-    }
+  //  public void setPublished_date(String published_date) {
+
+
+        //this.published_date = published_date;
+    //}
 
     public String getDescription() {
         return description;
@@ -93,6 +101,47 @@ public class Data implements Parcelable {
 
     }
 
+    private int convertMonthToNumber(String s){
+        if(s.equals("Jan")){
+            return 1;
+        }
+        else  if(s.equals("Feb")){
+            return 2;
+        }
+        else  if(s.equals("Mar")){
+            return 3;
+        }
+        else  if(s.equals("Apr")){
+            return 4;
+        }
+        else  if(s.equals("May")){
+            return 5;
+        }
+        else  if(s.equals("Jun")){
+            return 6;
+        }
+        else  if(s.equals("Jul")){
+            return 7;
+        }
+        else  if(s.equals("Aug")){
+            return 8;
+        }
+        else  if(s.equals("Sep")){
+            return 9;
+        }
+        else  if(s.equals("Oct")){
+            return 10;
+        }
+        else  if(s.equals("Nov")){
+            return 11;
+        }
+        else  if(s.equals("Dec")){
+            return 12;
+        }
+        Log.d("Couldnt find ", s);
+        return 77;
+    }
+
     public static final Parcelable.Creator<Data> CREATOR
             = new Parcelable.Creator<Data>() {
         public Data createFromParcel(Parcel in) {
@@ -113,6 +162,57 @@ public class Data implements Parcelable {
         this.urlToMp3 = in.readString();
         this.duration =in.readString();
     }
+
+    public void setPublished_date(String published_date) {
+        //  Log.d("Date string",dateStrength); //Works, its retrieveing data
+        this.published_date = published_date;
+        int day = Integer.parseInt(published_date.substring(5,7));
+        Log.d("POOP",published_date);
+        int month = convertMonthToNumber(published_date.substring(8,11));
+        int year = Integer.parseInt(published_date.substring(12,16));
+       // Log.d("Day",day);
+        //Log.d("Month",month);
+        //Log.d("Year",year);
+        // this.setDateStrength("1");
+        if(day == 1){
+            this.dateStrength = (day); //if its january just get the day
+            //Log.d("dssa",this.dateStrength+"");
+        }else{
+            //Log.d("Dates are",month + "month" +day
+            //      +"day");
+            this.dateStrength = convertToDay(month,day,true);
+
+
+        }
+
+
+
+
+
+    }
+
+    //Recursive method that will get the strength of every date
+    public int convertToDay(int month,int days, boolean isJanuary){
+        int daysInMonths[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+        if(month == 1 && isJanuary)
+        {
+            return days;
+        }else if(month == 1){
+            return 31;
+        }
+        else
+            return days+=convertToDay(month-1,daysInMonths[month-1],false);
+    }
+
+//    @Override
+//    public int compareTo(Object another) {
+//        Data d = (Data) another;
+//        if (this.dateStrength < d.dateStrength){
+//            return -1;
+//        }else{
+//            return 1;
+//        }
+//    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.example.brianbystrom.hw7;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Created by brianbystrom on 3/9/17.
  */
 
-public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder> {
+public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder> implements PlayPodcastAsync.IData  {
     private ArrayList<Data> mDataset;
     private Context mContext;
 
@@ -51,6 +52,9 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
         // create a new view
 
         View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.podcast_layout_grid, parent, false);
+
+
+
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -61,18 +65,19 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //TextView tv = (TextView) holder.mLinearLayout.findViewById(R.id.podcast_tv);
-       holder.mPodcastTv.setText(mDataset.get(position).getTitle());
+        holder.mPodcastTv.setText(mDataset.get(position).getTitle());
         Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
 
-        /*holder.mPodcastIb.setOnClickListener(new View.OnClickListener() {
+        holder.mPodcastIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("PLAY", "PLAY" + mDataset.get(position).getUrlToMp3());
-                new PlayPodcastAsync().execute(mDataset.get(position).getUrlToMp3());
+                new PlayPodcastAsync(MyAdapterGrid.this).execute(mDataset.get(position).getUrlToMp3());
 
 
             }
-        });*/
+        });
+
 
         if (!mDataset.get(position).getUrlToImage().toString().equals("")) {
             Picasso.with(mContext).load(mDataset.get(position).getUrlToImage()).into(holder.mPodcastIv);
@@ -81,11 +86,18 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
 
     }
 
+    public void playPodcast(MediaPlayer mPlayer) {
+        mPlayer.start();
+        int duration = 0;
+        int current = 0;
+    }
+
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
 }
+
 
 

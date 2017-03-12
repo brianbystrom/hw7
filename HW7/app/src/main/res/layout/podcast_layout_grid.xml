@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="100dp">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="50dp"
         app:srcCompat="@android:drawable/btn_dialog"
-        android:id="@+id/podcast_iv" />
+        android:id="@+id/podcast_iv"
+        android:layout_centerInParent="true" />
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:id="@+id/podcast_tv"
-        android:layout_toRightOf="@+id/podcast_iv"
+        android:layout_below="@+id/podcast_iv"
         android:layout_marginTop="-35dp"/>
-</RelativeLayout>
+</LinearLayout>

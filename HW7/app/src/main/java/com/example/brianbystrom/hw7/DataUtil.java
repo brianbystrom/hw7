@@ -71,6 +71,10 @@ public class DataUtil {
                 if(counter > 0) {
                     data.setUrlToMp3((attributes.getValue("url").toString()));
                 }
+            } else if(localName.equals("duration")) {
+                if(counter > 0) {
+                    data.setDuration((qName.toString()));
+                }
             }
         }
 
@@ -86,13 +90,16 @@ public class DataUtil {
             if(data != null) {
                 if(localName.equals("title")) {
                     data.setTitle(xmlInnerText.toString());
-                    Log.d("UTIL", "TITLE" + xmlInnerText.toString());
+                    Log.d("UTIL", "TITLE" + xmlInnerText.toString().trim());
                 } else if(localName.equals("pubDate")) {
-                    data.setPublished_date((xmlInnerText.toString()));
+                    data.setPublished_date((xmlInnerText.toString().trim()));
                     Log.d("UTIL", "PUB DATE" + xmlInnerText.toString());
                 } else if(localName.equals("description")) {
-                    data.setDescription(xmlInnerText.toString());
+                    data.setDescription(xmlInnerText.toString().trim());
                     Log.d("UTIL", "DESC" + xmlInnerText.toString());
+                } else if(localName.equals("duration")) {
+                    data.setDuration(xmlInnerText.toString().trim());
+                    Log.d("UTIL", "DURATION" + xmlInnerText.toString());
                 }
 
 

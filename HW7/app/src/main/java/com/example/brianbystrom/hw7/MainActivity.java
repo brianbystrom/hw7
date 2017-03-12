@@ -1,8 +1,10 @@
 package com.example.brianbystrom.hw7;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,12 +12,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     int layout = 0;
+    final static String PODCAST_KEY = "PODCAST";
+
 
 
     @Override
@@ -46,20 +59,7 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
         URL = "https://www.npr.org/rss/podcast.php?id=510298";
         new GetNewsAsync(MainActivity.this).execute(URL);
 
-        String url = "https://drive.google.com/file/d/0B42c3pO5_y67SHh6dHU0NEZiaXc/view?usp=sharing"; // your URL here
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-         // might take long! (for buffering, etc)
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +102,17 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
 
         mRecyclerView = (RecyclerView) findViewById(R.id.podcast_rv);
 
+        ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Data podcast = s.get(position);
+                Intent toPlayActivity = new Intent(MainActivity.this, PlayActivity.class);
+                toPlayActivity.putExtra(PODCAST_KEY, podcast);
+
+                startActivity(toPlayActivity);
+            }
+        });
+
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
@@ -114,6 +125,14 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
         mAdapter = new MyAdapter(s, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
+        ProgressBar pb = (ProgressBar) findViewById(R.id.pb_load);
+        pb.setVisibility(GONE);
+        mRecyclerView.setVisibility(VISIBLE);
+
 
     }
 }
+
+
+
+

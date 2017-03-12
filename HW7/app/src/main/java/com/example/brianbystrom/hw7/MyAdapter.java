@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by brianbystrom on 3/9/17.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements PlayPodcastAsync.IData {
     private ArrayList<Data> mDataset;
     private Context mContext;
 
@@ -66,7 +66,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //TextView tv = (TextView) holder.mLinearLayout.findViewById(R.id.podcast_tv);
-       holder.mPodcastTv.setText(mDataset.get(position).getTitle());
+        holder.mPodcastTv.setText(mDataset.get(position).getTitle());
         holder.mPubDateTv.setText(mDataset.get(position).getPublished_date());
         Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
 
@@ -74,7 +74,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Log.d("PLAY", "PLAY" + mDataset.get(position).getUrlToMp3());
-                new PlayPodcastAsync().execute(mDataset.get(position).getUrlToMp3());
+                new PlayPodcastAsync(MyAdapter.this).execute(mDataset.get(position).getUrlToMp3());
 
 
             }
@@ -85,7 +85,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         }
 
+
+
     }
+
+    public void playPodcast(MediaPlayer mPlayer) {
+        mPlayer.start();
+        int duration = 0;
+        int current = 0;
+    }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
@@ -93,5 +102,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return mDataset.size();
     }
 }
-
 

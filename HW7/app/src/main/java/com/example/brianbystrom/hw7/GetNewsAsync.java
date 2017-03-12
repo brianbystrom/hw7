@@ -7,6 +7,7 @@ Group Members: Brian Bystrom
 package com.example.brianbystrom.hw7;
 
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 public class GetNewsAsync extends AsyncTask<String, Void, ArrayList<Data>> {
 
     IData activity;
+
+    ProgressBar pb;
 
     public GetNewsAsync(IData activity) {
         this.activity = activity;
@@ -65,6 +68,7 @@ public class GetNewsAsync extends AsyncTask<String, Void, ArrayList<Data>> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
     }
 
     @Override

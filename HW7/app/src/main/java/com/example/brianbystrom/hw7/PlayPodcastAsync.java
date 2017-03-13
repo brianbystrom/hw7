@@ -1,7 +1,7 @@
 /*
-Assignment #: In Class 05
-File Name: GetNewsAsync.java
-Group Members: Brian Bystrom
+Assignment #: Homework 07
+File Name: PlayPodcastAsync.java
+Group Members: Brian Bystrom, Mohamed Salad
 */
 
 package com.example.brianbystrom.hw7;

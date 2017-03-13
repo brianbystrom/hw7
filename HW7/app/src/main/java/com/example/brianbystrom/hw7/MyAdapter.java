@@ -1,3 +1,9 @@
+/*
+Assignment #: Homework 07
+File Name: MyAdapter.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw7;
 
 import android.content.Context;
@@ -29,6 +35,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     private ArrayList<Data> mDataset;
     private Context mContext;
     private Data clickedRadio;
+    public static PlayPodcastAsync aTask;
+
     int counter = 0;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -119,16 +127,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         holder.mPubDateTv.setText("Posted: "+month+"/"+day+"/"+year);//mDataset.get(position).getPublished_date());
 
 
-        Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
-
         holder.mPodcastIb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PLAY", "PLAY" + mDataset.get(position).getUrlToMp3());
                 clickedRadio = mDataset.get(position);
                 new PlayPodcastAsync(MyAdapter.this).execute(mDataset.get(position).getUrlToMp3());
-
-
             }
         });
 
@@ -143,6 +146,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     public void playPodcast(MediaPlayer mPlayer) {
         mPlayer.start();
+        if (MainActivity.mp.size() > 0) {
+            MainActivity.mp.get(0).release();
+            MainActivity.mp.clear();
+        }
+        MainActivity.mp.add(mPlayer);
         int duration = mPlayer.getDuration();
         new syncTime(mPlayer).execute(mPlayer);
         counter = 0;
@@ -194,12 +202,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
         @Override
         protected Void doInBackground(MediaPlayer... progressBars) {
-            Log.d("Duration","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             int duration = mPlayer.getDuration();
             while(mPlayer.getCurrentPosition() < duration) {
                 ((MainActivity) mContext).updateProg(mPlayer.getCurrentPosition(), duration);
                         //pb.setProgress(mPlayer.getCurrentPosition());
-                Log.d("CURRENT", mPlayer.getCurrentPosition() + "");
             }
             return null;
         }

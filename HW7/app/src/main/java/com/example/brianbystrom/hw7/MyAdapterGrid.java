@@ -1,3 +1,9 @@
+/*
+Assignment #: Homework 07
+File Name: MyAdapterGrid.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw7;
 
 import android.content.Context;
@@ -31,12 +37,13 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
         // each data item is just a string in this case
         public LinearLayout mLinearLayout;
         public TextView mPodcastTv, mPubDateTv;
-        public ImageButton mPodcastIb;
+        public ImageButton mPodcastIb, control;
         public ImageView mPodcastIv;
         public ViewHolder(View v) {
             super(v);
             mPodcastTv = (TextView) v.findViewById(R.id.podcast_tv);
             mPodcastIv = (ImageView) v.findViewById(R.id.podcast_iv);
+            control = (ImageButton) v.findViewById(R.id.playcontrol_ib);
         }
     }
 
@@ -61,18 +68,17 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //TextView tv = (TextView) holder.mLinearLayout.findViewById(R.id.podcast_tv);
         holder.mPodcastTv.setText(mDataset.get(position).getTitle());
-        Log.d("IMAGE URL", mDataset.get(position).getUrlToImage());
 
         holder.mPodcastIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PLAY", "PLAY" + mDataset.get(position).getUrlToMp3());
                 new PlayPodcastAsync(MyAdapterGrid.this).execute(mDataset.get(position).getUrlToMp3());
+
 
 
             }
@@ -88,9 +94,14 @@ public class MyAdapterGrid extends RecyclerView.Adapter<MyAdapterGrid.ViewHolder
 
     public void playPodcast(MediaPlayer mPlayer) {
         mPlayer.start();
+        if (MainActivity.mp.size() > 0) {
+            MainActivity.mp.get(0).release();
+            MainActivity.mp.clear();
+        }        MainActivity.mp.add(mPlayer);
         int duration = 0;
         int current = 0;
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

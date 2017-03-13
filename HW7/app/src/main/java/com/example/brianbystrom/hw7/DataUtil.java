@@ -1,7 +1,7 @@
 /*
-Assignment #: In Class 05
+Assignment #: Homework 07
 File Name: DataUtil.java
-Group Members: Brian Bystrom
+Group Members: Brian Bystrom, Mohamed Salad
 */
 
 package com.example.brianbystrom.hw7;

@@ -1,3 +1,8 @@
+/*
+Assignment #: Homework 07
+File Name: ItemClickSupport.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
 
 package com.example.brianbystrom.hw7;
 

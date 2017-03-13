@@ -1,3 +1,9 @@
+/*
+Assignment #: Homework 07
+File Name: MainActivity.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw7;
 
 import android.content.Context;
@@ -5,6 +11,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Parcelable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -46,15 +53,22 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
     final static String PODCAST_KEY = "PODCAST";
     public ProgressBar pb;
     public ProgressBar pbpod;
+    public static ArrayList<MediaPlayer> mp = new ArrayList();
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(myToolbar);
+
+        ActionBar ab =getSupportActionBar();
+        ab.setDisplayShowHomeEnabled(true);
+        ab.setIcon(R.mipmap.ic_ted);
 
 
 
@@ -130,6 +144,14 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Data podcast = s.get(position);
+
+                if (mp.size() > 0) {
+                    mp.get(0).stop();
+
+                }
+
+                //MyAdapter.aTask.cancel(true);
+
                 Intent toPlayActivity = new Intent(MainActivity.this, PlayActivity.class);
                 toPlayActivity.putExtra(PODCAST_KEY, podcast);
 

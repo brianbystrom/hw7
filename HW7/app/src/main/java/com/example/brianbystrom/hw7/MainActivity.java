@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
     private RecyclerView.LayoutManager mLayoutManager;
     int layout = 0;
     final static String PODCAST_KEY = "PODCAST";
+    public ProgressBar pb;
+    public ProgressBar pbpod;
 
 
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+
 
 
     @Override
@@ -94,11 +97,32 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
 
     public void setupData(final ArrayList<Data> s) {
 
-        for (int i = 0; i > s.size(); i++) {
-            Log.d("DEMO", s.get(i).getTitle());
-        }
 
         d = s;
+        for(int i = 0; i < 145; i++){
+            if(s.get(i).getPublished_date().contains("2017")){
+            s.remove(i);
+            }
+        }
+        Log.d("SIZE",s.size()+"");
+        //Collections.sort(s);
+//        for(int i = 0; i < 50; i++){
+//            int lowestDay = s.get(i).dateStrength;
+//            int lowestIndex = i;
+//            int temp = lowestDay;
+//            int tempIndex = i;
+//            //compare the date at i [0]
+//            for(int j = i+1; j < 49; j++){
+//
+//                //Find the lowest value strenth and swap with i
+//                if(s.get(j).dateStrength < temp){
+//                    temp = s.get(j).dateStrength;
+//                    tempIndex = j;
+//                }
+//            }
+//            Log.d("POSITION ",(i+1)+"");
+//            s.add(i,s.get(tempIndex));
+//        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.podcast_rv);
 
@@ -125,9 +149,18 @@ public class MainActivity extends AppCompatActivity implements GetNewsAsync.IDat
         mAdapter = new MyAdapter(s, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
-        ProgressBar pb = (ProgressBar) findViewById(R.id.pb_load);
+       pb = (ProgressBar) findViewById(R.id.pb_load);
+        pbpod = (ProgressBar) findViewById(R.id.podcast_pb);
+        //pbpod.setMax(200000);
         pb.setVisibility(GONE);
         mRecyclerView.setVisibility(VISIBLE);
+
+
+    }
+
+    public void updateProg(int b, int duration){
+
+        pbpod.setProgress(b);
 
 
     }

@@ -52,6 +52,7 @@ public class PlayPodcastAsync extends AsyncTask<String, Void, MediaPlayer> {
         super.onPostExecute(mediaPlayer);
         activity.playPodcast(mediaPlayer);
 
+
     }
 
     @Override
